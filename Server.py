@@ -25,7 +25,7 @@ class server():
             IP=socket.gethostbyname(socket.gethostname())
             print("Server started, listening on IP address %s"%IP)   
             while (True):
-                message = struct.pack('Ibh',0xfeedbeef,0x2,0x67)#packet format
+                message = struct.pack('Ibh',0xfeedbeef,0x2,0x837)#packet format port 2103 
                 serverSocket.sendto(message,('<broadcast>',serverPort))
                 time.sleep(1)
         except socket.timeout():
@@ -37,7 +37,7 @@ class server():
         this function open TCP socket for the server and open threads for each user in the game
         after 10 seconds start the games for the players
         """
-        serverPort = 103
+        serverPort = 2103
         serverSocket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
         serverSocket.bind(("",serverPort))
         while (True):
