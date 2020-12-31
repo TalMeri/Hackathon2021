@@ -3,6 +3,7 @@ import time
 import struct
 import threading
 import random
+from scapy.arch import get_if_addr
 
 class server():
     Group1 = []
@@ -25,6 +26,7 @@ class server():
         serverSocket.setsockopt(socket.SOL_SOCKET,socket.SO_BROADCAST,1) 
         serverSocket.settimeout(10) #need to send the massages for 10 seconds
         try:
+            #IP=get_if_addr("eth1")
             IP=socket.gethostbyname(socket.gethostname())
             print("Server started, listening on IP address %s"%IP)   
             while (True):
