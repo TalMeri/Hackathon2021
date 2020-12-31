@@ -20,12 +20,11 @@ class client():
             clientSocket.bind(("",serverPort))
             while (rec==True): #search for offers - if offer is found stop searching
                 data, addr = clientSocket.recvfrom(1024)
-                print(addr)
                 unpacked = struct.unpack("Ibh",data)
                 if (hex(unpacked[0])=='0xfeedbeef' and unpacked[1]==2): #check if the offer is in the format
                     rec=False #if so stop looking for offers
-                print("Received offer from %s, attempting to connect..."%addr[0])
-                self.openSocketTCP(unpacked[2],addr[0]) #open tcp connection 
+            print("Received offer from %s, attempting to connect..."%addr[0])
+            self.openSocketTCP(unpacked[2],addr[0]) #open tcp connection 
 
     def openSocketTCP(self,port,IP):
         """

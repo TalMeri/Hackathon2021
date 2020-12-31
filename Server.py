@@ -25,8 +25,8 @@ class server():
             IP=socket.gethostbyname(socket.gethostname())
             print("Server started, listening on IP address %s"%IP)   
             while (True):
-                message = struct.pack('Ibh',0xfeedbeef,0x2,0x67) #packet format
-                serverSocket.sendto(message,("'<broadcast>'",serverPort))
+                message = struct.pack('Ibh',0xfeedbeef,0x2,0x67)#packet format
+                serverSocket.sendto(message,('<broadcast>',serverPort))
                 time.sleep(1)
         except socket.timeout():
             serverSocket.close()
