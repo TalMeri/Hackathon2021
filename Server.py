@@ -10,6 +10,9 @@ class server():
     threads = []
     sumGroup1=0
     sumGroup2=0
+    bufferSize=1024
+    TCPPort=2103
+    UDPPort=13117
 
     
     def openSocketUDP(self):
@@ -17,7 +20,7 @@ class server():
         this function open UDP socket for the server and sent broadcast messages
         send the massage every second for 10 seconds 
         """
-        serverPort = 13117
+        serverPort = self.UDPPort
         serverSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         serverSocket.setsockopt(socket.SOL_SOCKET,socket.SO_BROADCAST,1) 
         serverSocket.settimeout(10) #need to send the massages for 10 seconds
@@ -37,7 +40,7 @@ class server():
         this function open TCP socket for the server and open threads for each user in the game
         after 10 seconds start the games for the players
         """
-        serverPort = 2103
+        serverPort = self.TCPPort
         serverSocket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
         serverSocket.bind(("",serverPort))
         while (True):
@@ -48,7 +51,7 @@ class server():
             try:
                 while (True):
                     connectionSocket, addr = serverSocket.accept()
-                    sentence = connectionSocket.recv(1024)
+                    sentence = connectionSocket.recv(self.bufferSize)
                     choose=random.choice(["Group1","Group2"]) #choose Group randomly 
                     if (choose=="Group1"):
                         self.Group1.append(sentence)
@@ -89,7 +92,7 @@ class server():
             connectionSocket.settimeout(10) #the game is only 10 seconds
             try:
                 while (True):
-                    connectionSocket.recv(1024)
+                    connectionSocket.recv(self.bufferSize)
                     sum+=1 #add 1 to the sum when key is prassed 
             except socket.timeout: #print the scores 
                 if (choose=="Group1"):

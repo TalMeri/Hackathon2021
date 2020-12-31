@@ -6,20 +6,23 @@ import msvcrt
 
 
 class client():
+    buffersize=1024
+    teamName="ATeam"
+    UDPPort=13117
 
     def openSocketUDP(self):
         """
         this function open UDP socket for the client and recv the offers form the server
         """
         while(True):
-            serverPort = 13117
+            serverPort = self.UDPPort
             clientSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
             clientSocket.setsockopt(socket.SOL_SOCKET,socket.SO_BROADCAST,1) 
             print ("Client started, listening for offer reqests...")
             rec=True
             clientSocket.bind(("",serverPort))
             while (rec==True): #search for offers - if offer is found stop searching
-                data, addr = clientSocket.recvfrom(1024)
+                data, addr = clientSocket.recvfrom(self.buffersize)
                 unpacked = struct.unpack("Ibh",data)
                 if (hex(unpacked[0])=='0xfeedbeef' and unpacked[1]==2): #check if the offer is in the format
                     rec=False #if so stop looking for offers
@@ -37,9 +40,9 @@ class client():
             serverPort = port
             clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             clientSocket.connect((serverName,serverPort)) #connection to the TCP
-            sentence = b"ATeam\n"
+            sentence = self.teamName.encode()
             clientSocket.send(sentence) #send to the sever my team name
-            modifiedSentence = clientSocket.recv(1024)
+            modifiedSentence = clientSocket.recv(self.buffersize)
             print (modifiedSentence.decode()) 
             timeout = time.time()+10
             while msvcrt.kbhit():#make sure that only the keys pressed in this 10 seconds are counted
@@ -47,7 +50,7 @@ class client():
             while time.time()<=timeout: #the game is for 10 seconds
                 if(msvcrt.kbhit()):
                     clientSocket.send(getch.getch())
-            modifiedSentence = clientSocket.recv(1024)
+            modifiedSentence = clientSocket.recv(self.buffersize)
             print (modifiedSentence.decode())
             print("Server disconnected, listening for offer requests...")
             clientSocket.close()
