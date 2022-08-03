@@ -1,7 +1,7 @@
 # Hackathon2021 - Keyboard Spamming Battle
-client-server application of fast-paced Keyboard Spamming game
+Client-server application of fast-paced keyboard spamming game
 
-- Client- single-threaded
-- Server- multi-threaded
+- Client- single threaded
+- Server- multi threaded
 
 
